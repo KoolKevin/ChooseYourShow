@@ -1,0 +1,64 @@
+package dao.db2;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+
+import dao.DAOFactory;
+import dao.UtenteDAO;
+
+
+public class Db2DAOFactory extends DAOFactory {
+
+
+	public static final String DRIVER = "com.ibm.db2.jcc.DB2Driver";
+	
+	public static final String DBURL = "jdbc:db2://diva.deis.unibo.it:50000/is_stud";
+	//NON CAMBIARE ALTRIMENTI NON POTETE ACCEDERE ALLO SCHEMA DI KEVIN
+	public static final String USERNAME = "A0989712";
+	public static final String PASSWORD = "Gambadilegno11";
+
+	// --------------------------------------------
+
+	// static initializer block to load db driver class in memory
+	static {
+		try {
+			Class.forName(DRIVER);
+		} 
+		catch (Exception e) {
+			System.err.println(Db2DAOFactory.class.getName()+": failed to load DB2 JDBC driver" + "\n" + e.toString());
+			e.printStackTrace();
+		}
+	}
+
+	// --------------- METODI PER OTTENERE/CHIUDERE UNA CONNESSIONE AL DB -----------------------------
+
+	public static Connection createConnection() {
+		try {
+			return DriverManager.getConnection(DBURL,USERNAME,PASSWORD);
+		} 
+		catch (Exception e) {
+			System.err.println(Db2DAOFactory.class.getName() + ".createConnection(): failed creating connection" + "\n" + e.toString());
+			e.printStackTrace();
+			System.err.println("Was the database started? Is the database URL right?");
+			return null;
+		}
+	}
+	
+	public static void closeConnection(Connection conn) {
+		try {
+			conn.close();
+		}
+		catch (Exception e) {
+			System.err.println(Db2DAOFactory.class.getName() + ".closeConnection(): failed closing connection" + "\n" + e.toString());
+			e.printStackTrace();
+		}
+	}
+
+	// ------------------ METODI CHE RITORNANO I DAO --------------------------
+	
+	@Override
+	public UtenteDAO getUtenteDAO() {
+		return new Db2UtenteDAO();
+	}
+	
+}

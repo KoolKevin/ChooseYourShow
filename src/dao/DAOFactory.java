@@ -1,0 +1,23 @@
+package dao;
+
+import dao.db2.Db2DAOFactory;
+
+public abstract class DAOFactory {
+
+	// --- List of supported DAO types ---
+	public static final int DB2 = 0;
+	
+	// --- Actual factory method ---
+	public static DAOFactory getDAOFactory(int whichFactory) {
+		switch ( whichFactory ) {
+			case DB2:
+				return new Db2DAOFactory();
+			default:
+				return null;
+		}
+	}
+	
+	// --- Factory specification: concrete factories implementing this spec must provide this methods! ---
+	public abstract UtenteDAO getUtenteDAO();
+	
+}
