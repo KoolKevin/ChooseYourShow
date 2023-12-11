@@ -25,6 +25,25 @@ public class LoginServlet extends HttpServlet {
 	
 	@Override
 	public void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String operazione = request.getParameter("operazione");
+		
+		//dispatching
+		switch (operazione) {
+	        case "loginUtente":
+	        	request.removeAttribute("operazione");
+	        	loginUtente(request, response);
+	            break;
+	        case "logoutUtente":
+	        	request.removeAttribute("operazione");
+	        	logoutUtente(request, response);
+	            break;
+	        default:
+	        	//nella loginServlet in caso di errore ritorno al login
+	        	response.sendRedirect("pages/login.jsp?errore=operazione: "+operazione+" non supportata");
+	    }
+	}
+	
+	public void loginUtente(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		UtenteDAO utenteDAO = daoFactory.getUtenteDAO();
 		
 		String email = request.getParameter("email");
@@ -34,7 +53,7 @@ public class LoginServlet extends HttpServlet {
 		
 		//autenticazione fallita
 		if( result == null ) {
-			response.sendRedirect("pages/login.html");
+			response.sendRedirect("pages/login.jsp?logged_in=false");
 		}
 		//mi sono autenticato
 		else {
@@ -44,5 +63,10 @@ public class LoginServlet extends HttpServlet {
 			//forward
 			response.sendRedirect("pages/homepage.jsp");
 		}
+	}
+	
+	public void logoutUtente(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+		request.getSession().invalidate();
+		response.sendRedirect("pages/login.jsp?logged_in=logged_out");
 	}
 }

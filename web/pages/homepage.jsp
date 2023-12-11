@@ -10,8 +10,7 @@
 
 <html>
 	<head>
-		<script type="text/javascript" src="scripts/utils.js"></script>
-		<script type="text/javascript" src="scripts/catalogue.js"></script>
+		<script type="text/javascript" src="../scripts/utils.js"></script>
 		<title>CYS Homepage</title>
 	</head>
 
@@ -22,12 +21,12 @@
 			if(u != null) { 
 		%> 
 		<h3>utente corrente: <%= u.toString() %></h3>
-		<a href="#">logout</a>
+		<a href="../loginServlet?operazione=logoutUtente">logout</a>
 		<%
 			} //if( u != null)
 			else {
 		%>
-		<a href="login.html">login</a>
+		<a href="login.jsp">login</a>
 		<%		
 			} //else
 		%>
