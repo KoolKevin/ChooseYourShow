@@ -3,6 +3,7 @@
 bin/
 tmp/
 build/
+ant/environment.properties
 *.tmp
 *.bak
 *.swp
