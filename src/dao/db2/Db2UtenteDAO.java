@@ -18,11 +18,6 @@ public class Db2UtenteDAO implements UtenteDAO {
 		private static final String FLAG_NOTIFICHE_APP = "flagnotificheapp";
 		private static final String FLAG_NOTIFICHE_MAIL = "flagnotifichemail";
 		private static final String FK_ID_CITTA = "idcitta";
-		
-	private static final String TABLE_CITTA = "citta";
-		private static final String ID_CITTA = "id";
-		private static final String NOME_CITTA = "nome";
-		private static final String COORDINATE_CITTA = "coordinate";
 	
 	//query
 	private static final String INSERT = "INSERT INTO "+TABLE+"("+USERNAME+","+EMAIL+","+PASSWORD+","
@@ -37,10 +32,7 @@ public class Db2UtenteDAO implements UtenteDAO {
 			"FROM " + TABLE + " " +
 			"WHERE " + EMAIL + " = ? "
 			+"AND " + PASSWORD + " = ? ";
-	
-	private static final String READ_CITTA_BY_ID = "SELECT * " +
-			"FROM " + TABLE_CITTA + " " +
-			"WHERE " + ID_CITTA + " = ? ";
+
 	
 	//TODO: costanti per query UPDATE e DELETE
 		
@@ -119,20 +111,8 @@ public class Db2UtenteDAO implements UtenteDAO {
 				idCitta = rs.getInt(FK_ID_CITTA);
 				
 				//fetch eager: recupero subito la citta associata all'utente
-				//TODO: SPOSTA QUESTO BLOCCO NEL DAO DELLA CITTA
-				Citta citta = new Citta();
-				{
-					PreparedStatement prep_stmt_citta = conn.prepareStatement(READ_CITTA_BY_ID);
-					prep_stmt_citta.clearParameters();
-					prep_stmt_citta.setInt(1, idCitta);
-					ResultSet rs_citta = prep_stmt_citta.executeQuery();
-					
-					if ( rs_citta.next()) {
-						citta.setId( rs_citta.getInt(ID_CITTA) );
-						citta.setNome( rs_citta.getString(NOME_CITTA) );
-						citta.setCoordinate( rs_citta.getString(COORDINATE_CITTA) );
-					}
-				}
+				Db2CittaDAO cittaDAO = new Db2CittaDAO();
+				Citta citta = cittaDAO.read(idCitta);
 				
 				entry.setCitta(citta);
 				
@@ -191,20 +171,9 @@ public class Db2UtenteDAO implements UtenteDAO {
 				idCitta = rs.getInt(FK_ID_CITTA);
 				
 				//fetch eager: recupero subito la citta associata all'utente
-				//TODO: SPOSTA QUESTO BLOCCO NEL DAO DELLA CITTA
-				Citta citta = new Citta();
-				{
-					PreparedStatement prep_stmt_citta = conn.prepareStatement(READ_CITTA_BY_ID);
-					prep_stmt_citta.clearParameters();
-					prep_stmt_citta.setInt(1, idCitta);
-					ResultSet rs_citta = prep_stmt_citta.executeQuery();
-					
-					if ( rs_citta.next()) {
-						citta.setId( rs_citta.getInt(ID_CITTA) );
-						citta.setNome( rs_citta.getString(NOME_CITTA) );
-						citta.setCoordinate( rs_citta.getString(COORDINATE_CITTA) );
-					}
-				}
+				//fetch eager: recupero subito la citta associata all'utente
+				Db2CittaDAO cittaDAO = new Db2CittaDAO();
+				Citta citta = cittaDAO.read(idCitta);
 				
 				entry.setCitta(citta);
 				

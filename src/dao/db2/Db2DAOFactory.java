@@ -3,6 +3,7 @@ package dao.db2;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
+import dao.CittaDAO;
 import dao.DAOFactory;
 import dao.UtenteDAO;
 
@@ -59,6 +60,11 @@ public class Db2DAOFactory extends DAOFactory {
 	@Override
 	public UtenteDAO getUtenteDAO() {
 		return new Db2UtenteDAO();
+	}
+	
+	@Override
+	public CittaDAO getCittaDAO() {
+		return new Db2CittaDAO();
 	}
 	
 }

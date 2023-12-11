@@ -20,4 +20,6 @@ public abstract class DAOFactory {
 	// --- Factory specification: concrete factories implementing this spec must provide this methods! ---
 	public abstract UtenteDAO getUtenteDAO();
 	
+	public abstract CittaDAO getCittaDAO();
+	
 }

@@ -2,6 +2,7 @@ package test;
 
 import beans.Citta;
 import beans.Utente;
+import dao.CittaDAO;
 import dao.DAOFactory;
 import dao.UtenteDAO;
 
@@ -11,11 +12,16 @@ public class MainPerTest {
 	public static void main(String[] args) {
 		DAOFactory daoFactoryInstance = DAOFactory.getDAOFactory(DAO);
 		
-		UtenteDAO utenteDAO = daoFactoryInstance.getUtenteDAO();
-		
+		CittaDAO cittaDAO = daoFactoryInstance.getCittaDAO();
 		Citta c = new Citta();
-		c.setId(1);
+		c.setNome("Bologna");
+		c.setCoordinate("boh");
+		cittaDAO.create(c);
 		
+		c = cittaDAO.read(21);
+		System.out.println(c);
+		
+		UtenteDAO utenteDAO = daoFactoryInstance.getUtenteDAO();
 		Utente u1 = new Utente();
 		u1.setUsername("mario");
 		u1.setEmail("mario@gmail.com");
@@ -35,7 +41,7 @@ public class MainPerTest {
 		//utenteDAO.create(u2);
 
 		Utente utente_letto = utenteDAO.read(4);
-		//System.out.println(utente_letto);
+		System.out.println(utente_letto);
 		
 		Utente utente_loggato = utenteDAO.read("mirio@gmail.com", "pluto");
 		System.out.println(utente_loggato);
