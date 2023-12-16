@@ -30,5 +30,18 @@
 		<%		
 			} //else
 		%>
+		
+		<br>
+		<a href="ricerca.jsp">fai delle ricerche</a>
+		
+		<!-- errore nel dispatching della  GestioneUtenteServlet -->
+ 		<%
+ 			String errore=request.getParameter("errore");
+ 			if( errore != null ) {
+ 		%>
+ 		<div>c'è stato un errore nella GestioneUtenteServlet: <%= errore %></div>
+ 		<%
+ 			} //if
+ 		%>
 	</body>
 </html>

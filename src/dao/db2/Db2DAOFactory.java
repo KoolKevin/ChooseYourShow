@@ -5,6 +5,8 @@ import java.sql.DriverManager;
 
 import dao.CittaDAO;
 import dao.DAOFactory;
+import dao.LocaleDAO;
+import dao.SpettacoloDAO;
 import dao.UtenteDAO;
 
 
@@ -61,10 +63,17 @@ public class Db2DAOFactory extends DAOFactory {
 	public UtenteDAO getUtenteDAO() {
 		return new Db2UtenteDAO();
 	}
-	
 	@Override
 	public CittaDAO getCittaDAO() {
 		return new Db2CittaDAO();
+	}
+	@Override
+	public LocaleDAO getLocaleDAO() {
+		return new Db2LocaleDAO();
+	}
+	@Override
+	public SpettacoloDAO getSpettacoloDAO() {
+		return new Db2SpettacoloDAO();
 	}
 	
 }

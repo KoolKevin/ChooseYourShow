@@ -6,7 +6,6 @@
 
 <html>
    <head>
-      <title>Start Web Application</title>
 	  <link type="text/css" href="../styles/default.css" rel="stylesheet"></link>
    </head>
    
@@ -17,6 +16,8 @@
  			Password: <input name="password" type="password"/><br>
  			<input name="operazione" value="loginUtente" type="submit" />
  		</form>
+ 		
+ 		<a href="homepage_utente.jsp">vai alla homepage"</a>
  		
  		<!-- errore nel dispatching della login servlet -->
  		<%

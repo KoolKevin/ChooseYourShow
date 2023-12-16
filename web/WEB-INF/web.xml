@@ -23,10 +23,14 @@
         <servlet-name>LogoutServlet</servlet-name>
         <servlet-class>servlets.LogoutServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>GestioneUtenteServlet</servlet-name>
+        <servlet-class>servlets.GestioneUtenteServlet</servlet-class>
+    </servlet>
     
     <servlet-mapping>
-        <servlet-name>LoginServlet</servlet-name>
-        <url-pattern>/loginServlet</url-pattern>
+        <servlet-name>GestioneUtenteServlet</servlet-name>
+        <url-pattern>/gestioneUtenteServlet</url-pattern>
     </servlet-mapping>
   	<servlet-mapping>
         <servlet-name>LogoutServlet</servlet-name>
