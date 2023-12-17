@@ -3,9 +3,11 @@ package dao.db2;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
+import dao.ArtistaDAO;
 import dao.CittaDAO;
 import dao.DAOFactory;
 import dao.LocaleDAO;
+import dao.SpettacoloArtistaMappingDAO;
 import dao.SpettacoloDAO;
 import dao.UtenteDAO;
 
@@ -74,6 +76,16 @@ public class Db2DAOFactory extends DAOFactory {
 	@Override
 	public SpettacoloDAO getSpettacoloDAO() {
 		return new Db2SpettacoloDAO();
+	}
+
+	@Override
+	public ArtistaDAO getArtistaDAO() {
+		return new Db2ArtistaDAO();
+	}
+
+	@Override
+	public SpettacoloArtistaMappingDAO getSpettacoloArtistaMappingDAO() {
+		return new Db2SpettacoloArtistaMappingDAO();
 	}
 	
 }

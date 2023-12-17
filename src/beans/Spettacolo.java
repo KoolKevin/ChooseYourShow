@@ -1,7 +1,9 @@
 package beans;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 public class Spettacolo {
 	private int id;
@@ -10,6 +12,8 @@ public class Spettacolo {
 	private String tipologia;
 	private String[] generi = new String[5];
 	private Locale locale;
+	private List<Artista> artisti = new ArrayList<Artista>();
+	private boolean alreadyLoaded = false;
 	
 	public int getId() {
 		return id;
@@ -67,9 +71,21 @@ public class Spettacolo {
 		this.locale = locale;
 	}
 	
+	public List<Artista> getArtisti() {
+		return artisti;
+	}
+	public void setArtisti(List<Artista> artisti) {
+		this.artisti = artisti;
+	}
 	@Override
 	public String toString() {
 		return "Spettacolo [id=" + id + ", nome=" + nome + ", data=" + data + ", tipologia=" + tipologia + ", generi="
-				+ Arrays.toString(generi) + ", locale=" + locale + "]";
+				+ Arrays.toString(generi) + ", locale=" + locale + ", artisti=" + artisti + "]";
+	}
+	public boolean isAlreadyLoaded() {
+		return alreadyLoaded;
+	}
+	public void setAlreadyLoaded(boolean alreadyLoaded) {
+		this.alreadyLoaded = alreadyLoaded;
 	}
 }

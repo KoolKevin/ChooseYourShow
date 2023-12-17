@@ -22,5 +22,7 @@ public abstract class DAOFactory {
 	public abstract CittaDAO getCittaDAO();
 	public abstract LocaleDAO getLocaleDAO();
 	public abstract SpettacoloDAO getSpettacoloDAO();
+	public abstract ArtistaDAO getArtistaDAO();
+	public abstract SpettacoloArtistaMappingDAO getSpettacoloArtistaMappingDAO();
 	
 }

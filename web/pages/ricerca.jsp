@@ -17,7 +17,7 @@
    		<!-- TODO: controlla che almeno un campo sia popolato -->
  		<form method="POST" action="../gestioneUtenteServlet">
  			nome spettacolo: <input name="nome_spettacolo" type="text"/><br>
- 			<!-- nome artista: <input name="nome_artista" type="text"/><br> -->
+ 			nome artista: <input name="nome_artista" type="text"/><br>
  			data spettacolo: <input name="data_spettacolo" type="date"/><br>
  			inizio periodo: <input name="inizio_periodo" type="date"/><br>
  			fine periodo: <input name="fine_periodo" type="date"/><br>
@@ -52,6 +52,7 @@
  			}//else
  		%>
  		</div>
+ 		<a href="homepage_utente.jsp">homepage_utente</a>
    </body>
 </html>
 

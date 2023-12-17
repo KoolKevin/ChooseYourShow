@@ -98,13 +98,14 @@ public class Db2SpettacoloDAO implements SpettacoloDAO {
 			ResultSet rs = prep_stmt.executeQuery();
 			
 			if (rs.next()) {
-				Spettacolo entry = new Spettacolo();
+				Spettacolo entry = new Db2SpettacoloProxy();
 				entry.setId(rs.getInt(ID));
 				entry.setNome(rs.getString(NOME));
 				//anche qua devo gestire bene i due formati di data
 				long secs = rs.getDate(DATA).getTime();
                 java.util.Date data = new java.util.Date(secs);
                 entry.setData(data);
+                entry.setTipologia(TIPOLOGIA);
                 entry.getGeneri()[0] = rs.getString(GENERE1);
                 entry.getGeneri()[1] = rs.getString(GENERE2);
                 entry.getGeneri()[2] = rs.getString(GENERE3);
@@ -116,6 +117,8 @@ public class Db2SpettacoloDAO implements SpettacoloDAO {
                 //fetch eager: recupero subito il locale associato allo spettacolo
 				Db2LocaleDAO localeDAO = new Db2LocaleDAO();
 				Locale locale = localeDAO.read(idLocale);
+				
+				//fetch lazy degli artisti: se ne occupa il proxy
 				
 				entry.setLocale(locale);
 				
@@ -155,13 +158,18 @@ public class Db2SpettacoloDAO implements SpettacoloDAO {
 		List<Spettacolo> result = new ArrayList<Spettacolo>();
 		//base della query
 		String query = "SELECT  s.* "
-						+ "FROM SPETTACOLI s, LOCALI l, CITTA c "
+						+ "FROM SPETTACOLI s, ARTISTI a, MAPPING_ARTISTA_SPETTACOLO mas, LOCALI l, CITTA c "
 						+ "WHERE s.IDLOCALE = l.ID "
-						+ "AND l.IDCITTA = c.ID ";
+						+ "AND l.IDCITTA = c.ID "
+						+ "AND a.ID = mas.IDARTISTA "
+						+ "AND s.ID= mas.IDSPETTACOLO ";
 		
 		//costruzione query
 		if( r.getNomeSpettacolo() != null) {
 			query = query + "AND LOWER(s.NOME) LIKE LOWER(?) ";
+		}
+		if( r.getNomeArtista() != null) {
+			query = query + "AND LOWER(a.NOMEARTE) LIKE LOWER(?) ";
 		}
 		if( r.getDataSpettacolo() != null) {
 			query = query + "AND s.DATA = ? ";
@@ -179,10 +187,10 @@ public class Db2SpettacoloDAO implements SpettacoloDAO {
 			query = query + "AND LOWER(s.GENERE1) LIKE LOWER(?) ";	//controllo solo un genere per semplicità
 		}
 		if( r.getNomeCitta() != null) {
-			query = query + "AND LOWER(c.NOME) LIKE LOWER('?') ";	
+			query = query + "AND LOWER(c.NOME) LIKE LOWER(?) ";	
 		}
 		if( r.getNomeLocale() != null) {
-			query = query + "AND LOWER(l.NOME) LIKE LOWER('?') ";	
+			query = query + "AND LOWER(l.NOME) LIKE LOWER(?) ";	
 		}
 		
 		//esecuzione query
@@ -194,6 +202,10 @@ public class Db2SpettacoloDAO implements SpettacoloDAO {
 			//setto i parametri
 			if( r.getNomeSpettacolo() != null) {
 				prep_stmt.setString(contaParametriSettati, "%"+r.getNomeSpettacolo()+"%");
+				contaParametriSettati++;
+			}
+			if( r.getNomeArtista() != null) {
+				prep_stmt.setString(contaParametriSettati, "%"+r.getNomeArtista()+"%");
 				contaParametriSettati++;
 			}
 			if( r.getDataSpettacolo() != null) {
@@ -226,15 +238,17 @@ public class Db2SpettacoloDAO implements SpettacoloDAO {
 			}
 			ResultSet rs = prep_stmt.executeQuery();
 			
+			Db2LocaleDAO localeDAO = new Db2LocaleDAO();
 			//costruisco il risultato
 			while(rs.next()) {
-				Spettacolo entry = new Spettacolo();
+				Spettacolo entry = new Db2SpettacoloProxy();
 				entry.setId(rs.getInt(ID));
 				entry.setNome(rs.getString(NOME));
 				//anche qua devo gestire bene i due formati di data
 				long secs = rs.getDate(DATA).getTime();
                 java.util.Date data = new java.util.Date(secs);
                 entry.setData(data);
+                entry.setTipologia(TIPOLOGIA);
                 entry.getGeneri()[0] = rs.getString(GENERE1);
                 entry.getGeneri()[1] = rs.getString(GENERE2);
                 entry.getGeneri()[2] = rs.getString(GENERE3);
@@ -244,10 +258,12 @@ public class Db2SpettacoloDAO implements SpettacoloDAO {
                 int idLocale = rs.getInt(FK_ID_LOCALE);
                 
                 //fetch eager: recupero subito il locale associato allo spettacolo
-				Db2LocaleDAO localeDAO = new Db2LocaleDAO();
+				
 				Locale locale = localeDAO.read(idLocale);
 				
 				entry.setLocale(locale);
+				
+				//fetch LAZY degli artisti associati allo spettacolo, ci pensa il proxy
 				
 				result.add(entry);
 			}

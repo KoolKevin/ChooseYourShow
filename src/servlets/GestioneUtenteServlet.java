@@ -48,6 +48,7 @@ public class GestioneUtenteServlet extends HttpServlet {
 		//acquisizione parametri ricevuti
 		//se il parametro non è specificato ottengo la stringa ""
 		String nomeSpettacolo = request.getParameter("nome_spettacolo");
+		String nomeArtista = request.getParameter("nome_artista");
 		String dataSpettacolo = request.getParameter("data_spettacolo");
 		String inizioPeriodo = request.getParameter("inizio_periodo");
 		String finePeriodo = request.getParameter("fine_periodo");
@@ -60,6 +61,8 @@ public class GestioneUtenteServlet extends HttpServlet {
 		RicercaSpettacolo ricercaSpettacolo = new RicercaSpettacolo();
 		if( !nomeSpettacolo.isEmpty() )
 			ricercaSpettacolo.setNomeSpettacolo(nomeSpettacolo);
+		if( !nomeArtista.isEmpty() )
+			ricercaSpettacolo.setNomeArtista(nomeArtista);
 		if( !dataSpettacolo.isEmpty() )
 			ricercaSpettacolo.setDataSpettacolo( Date.valueOf(LocalDate.parse(dataSpettacolo)) );
 		if( !inizioPeriodo.isEmpty() )

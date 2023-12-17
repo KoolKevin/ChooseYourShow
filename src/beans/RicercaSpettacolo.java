@@ -5,7 +5,7 @@ import java.util.Date;
 public class RicercaSpettacolo {
 	private int id;
 	private String nomeSpettacolo;
-	//private String nomeArtista;
+	private String nomeArtista;
 	private Date dataSpettacolo;
 	private Date inizioPeriodo;
 	private Date finePeriodo;
@@ -72,9 +72,15 @@ public class RicercaSpettacolo {
 	}
 	@Override
 	public String toString() {
-		return "RicercaSpettacolo [id=" + id + ", nomeSpettacolo=" + nomeSpettacolo + ", dataSpettacolo="
-				+ dataSpettacolo + ", inizioPeriodo=" + inizioPeriodo + ", finePeriodo=" + finePeriodo
-				+ ", tipoSpettacolo=" + tipoSpettacolo + ", genereSpettacolo=" + genereSpettacolo + ", nomeCitta="
-				+ nomeCitta + ", nomeLocale=" + nomeLocale + "]";
+		return "RicercaSpettacolo [id=" + id + ", nomeSpettacolo=" + nomeSpettacolo + ", nomeArtista=" + nomeArtista
+				+ ", dataSpettacolo=" + dataSpettacolo + ", inizioPeriodo=" + inizioPeriodo + ", finePeriodo="
+				+ finePeriodo + ", tipoSpettacolo=" + tipoSpettacolo + ", genereSpettacolo=" + genereSpettacolo
+				+ ", nomeCitta=" + nomeCitta + ", nomeLocale=" + nomeLocale + "]";
+	}
+	public String getNomeArtista() {
+		return nomeArtista;
+	}
+	public void setNomeArtista(String nomeArtista) {
+		this.nomeArtista = nomeArtista;
 	}
 }

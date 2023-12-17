@@ -1,56 +1,76 @@
 package test;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.sql.Date;
 
-import beans.Citta;
-import beans.Locale;
-import beans.RicercaSpettacolo;
-import beans.Spettacolo;
-import beans.Utente;
-import dao.CittaDAO;
-import dao.DAOFactory;
-import dao.LocaleDAO;
-import dao.SpettacoloDAO;
-import dao.UtenteDAO;
+import beans.*;
+import dao.*;
 
 public class MainPerTest {
 	public static final int DAO = DAOFactory.DB2;
 	// classe main per fare test
 	public static void main(String[] args) {
 		DAOFactory daoFactoryInstance = DAOFactory.getDAOFactory(DAO);
-		
-		CittaDAO cittaDAO = daoFactoryInstance.getCittaDAO();
-		Citta c = cittaDAO.read(21);
-		
-		LocaleDAO localeDAO = daoFactoryInstance.getLocaleDAO();
-		Locale l = new Locale();
-		l.setNome("arena di verona");
-		l.setCitta(c);
-		//localeDAO.create(l);
-		
-		l = localeDAO.read(4);
-		
-		System.out.println( l );
-		
-		SpettacoloDAO spettacoloDAO = daoFactoryInstance.getSpettacoloDAO();
-		Spettacolo s = new Spettacolo();
-		s.setNome("spettacolo bello");
-		s.setData(Date.valueOf(LocalDate.of(2018, 1, 14)));
-		s.setTipologia("figata");
-		s.getGeneri()[0] = "bello";
-		s.getGeneri()[1] = "rock";
-		s.setLocale(l);
-		//spettacoloDAO.create(s);
-		
-		System.out.println( spettacoloDAO.read(4) );
+	    SpettacoloArtistaMappingDAO spettacoloArtistaMappingDAO = daoFactoryInstance.getSpettacoloArtistaMappingDAO();
+	    SpettacoloDAO spettacoloDAO = daoFactoryInstance.getSpettacoloDAO();
+		ArtistaDAO artistaDAO = daoFactoryInstance.getArtistaDAO();
+	
+//		Artista a = artistaDAO.read(1);
+//		Spettacolo s = spettacoloDAO.read(4);
+//		System.out.println(a);
+//		System.out.println(s);
+//		System.out.println(a.getSpettacoli());
+//		System.out.println(s.getArtisti());
+		//spettacoloArtistaMappingDAO.create(4, 23);
+		//spettacoloArtistaMappingDAO.delete(4, 1);
 		
 		RicercaSpettacolo r = new RicercaSpettacolo();
-		r.setGenereSpettacolo("metal");
+		r.setNomeArtista("foo");
+		//r.setGenereSpettacolo("metal");
 		//r.setNomeSpettacolo("slayer");
-		r.setInizioPeriodo(Date.valueOf(LocalDate.of(2018, 1, 14)));
-		System.out.println(spettacoloDAO.cercaSpettacoli(r));
+		//r.setInizioPeriodo(Date.valueOf(LocalDate.of(2018, 1, 14)));
 		
+		List<Spettacolo> spettacoli = spettacoloDAO.cercaSpettacoli(r);
+		for(Spettacolo spect : spettacoli) {
+			System.out.println( spect );
+			spect.getArtisti();
+			System.out.println( spect );
+		}
+		
+		
+/* ------------------------- TEST VECCHI ------------------------*/ 	
+		
+//		CittaDAO cittaDAO = daoFactoryInstance.getCittaDAO();
+//		Citta c = cittaDAO.read(21);
+//		
+//		LocaleDAO localeDAO = daoFactoryInstance.getLocaleDAO();
+//		Locale l = new Locale();
+//		l.setNome("arena di verona");
+//		l.setCitta(c);
+//		//localeDAO.create(l);
+//		
+//		l = localeDAO.read(4);
+//		
+//		System.out.println( l );
+//		
+//		SpettacoloDAO spettacoloDAO = daoFactoryInstance.getSpettacoloDAO();
+//		Spettacolo s = new Spettacolo();
+//		s.setNome("spettacolo bello");
+//		s.setData(Date.valueOf(LocalDate.of(2018, 1, 14)));
+//		s.setTipologia("figata");
+//		s.getGeneri()[0] = "bello";
+//		s.getGeneri()[1] = "rock";
+//		s.setLocale(l);
+//		//spettacoloDAO.create(s);
+//		
+//		System.out.println( spettacoloDAO.read(4) );
+//		
+//		RicercaSpettacolo r = new RicercaSpettacolo();
+//		r.setGenereSpettacolo("metal");
+//		//r.setNomeSpettacolo("slayer");
+//		r.setInizioPeriodo(Date.valueOf(LocalDate.of(2018, 1, 14)));
+//		System.out.println(spettacoloDAO.cercaSpettacoli(r));
 //		CittaDAO cittaDAO = daoFactoryInstance.getCittaDAO();
 //		Citta c = new Citta();
 //		c.setNome("Bologna");
