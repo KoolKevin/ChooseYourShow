@@ -3,6 +3,8 @@ package dao.db2;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 import beans.Citta;
 import dao.CittaDAO;
@@ -106,5 +108,37 @@ public class Db2CittaDAO implements CittaDAO {
 	public boolean delete(int id) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public List<Citta> readAll() {
+		List<Citta> result = new ArrayList<Citta>();
+
+		Connection conn = Db2DAOFactory.createConnection();
+		try {
+			PreparedStatement prep_stmt = conn.prepareStatement("select * from " + TABLE);
+			ResultSet rs = prep_stmt.executeQuery();
+			
+			while(rs.next()) {
+				Citta entry = new Citta();
+				entry.setId(rs.getInt(ID));
+				entry.setNome(rs.getString(NOME));
+				entry.setCoordinate(rs.getString(COORDINATE));
+				
+				result.add(entry);
+			}
+				
+			rs.close();
+			prep_stmt.close();
+		}
+		catch (Exception e) {
+			System.err.println("read(): failed to retrieve all entries: " + e.getMessage());
+			e.printStackTrace();
+		}
+		finally {
+			Db2DAOFactory.closeConnection(conn);
+		}
+		
+		return result;
 	}
 }

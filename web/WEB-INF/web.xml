@@ -24,14 +24,15 @@
         <servlet-class>servlets.LogoutServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>IscrizioneServlet</servlet-name>
+        <servlet-class>servlets.IscrizioneServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>GestioneUtenteServlet</servlet-name>
         <servlet-class>servlets.GestioneUtenteServlet</servlet-class>
     </servlet>
     
-    <servlet-mapping>
-        <servlet-name>GestioneUtenteServlet</servlet-name>
-        <url-pattern>/gestioneUtenteServlet</url-pattern>
-    </servlet-mapping>
+    
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/loginServlet</url-pattern>
@@ -39,6 +40,14 @@
   	<servlet-mapping>
         <servlet-name>LogoutServlet</servlet-name>
         <url-pattern>/logoutServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>IscrizioneServlet</servlet-name>
+        <url-pattern>/iscrizioneServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GestioneUtenteServlet</servlet-name>
+        <url-pattern>/gestioneUtenteServlet</url-pattern>
     </servlet-mapping>
 
 	<!-- Welcome pages -->

@@ -12,34 +12,56 @@ public class MainPerTest {
 	// classe main per fare test
 	public static void main(String[] args) {
 		DAOFactory daoFactoryInstance = DAOFactory.getDAOFactory(DAO);
-	    SpettacoloArtistaMappingDAO spettacoloArtistaMappingDAO = daoFactoryInstance.getSpettacoloArtistaMappingDAO();
-	    SpettacoloDAO spettacoloDAO = daoFactoryInstance.getSpettacoloDAO();
 		ArtistaDAO artistaDAO = daoFactoryInstance.getArtistaDAO();
 	
+		Artista a = artistaDAO.read(1);
+		
+		PubblicatoreDAO pubblicatoreDAO = daoFactoryInstance.getPubblicatoreDAO();
+		Pubblicatore p = new Pubblicatore();
+		p.setEmail("kevin@gmail.com");
+		p.setPassword("pubblicatore");
+		p.setNomeOrganizzazione("cattiveria music");
+		p.setNomeCompleto("Koltraka Kevin");
+		p.setAutorizzato(false);
+		p.setFlag_notifiche_app(true);
+		p.setFlag_notifiche_mail(true);
+		p.setArtistaGestito(a);
+		//pubblicatoreDAO.create(p);
+		System.out.println( pubblicatoreDAO.read(1) );
+		System.out.println( pubblicatoreDAO.read("kevin@gmail.com", "pubblicatore") );
+	
+		CittaDAO cittaDAO = daoFactoryInstance.getCittaDAO();
+		System.out.println( cittaDAO.readAll() );
+		
+
+		
+		
+/* ------------------------- TEST VECCHI ------------------------*/ 	
+//	    SpettacoloArtistaMappingDAO spettacoloArtistaMappingDAO = daoFactoryInstance.getSpettacoloArtistaMappingDAO();
+//	    SpettacoloDAO spettacoloDAO = daoFactoryInstance.getSpettacoloDAO();
+//		ArtistaDAO artistaDAO = daoFactoryInstance.getArtistaDAO();
+//	
 //		Artista a = artistaDAO.read(1);
 //		Spettacolo s = spettacoloDAO.read(4);
 //		System.out.println(a);
 //		System.out.println(s);
 //		System.out.println(a.getSpettacoli());
 //		System.out.println(s.getArtisti());
-		//spettacoloArtistaMappingDAO.create(4, 23);
-		//spettacoloArtistaMappingDAO.delete(4, 1);
-		
-		RicercaSpettacolo r = new RicercaSpettacolo();
-		r.setNomeArtista("foo");
-		//r.setGenereSpettacolo("metal");
-		//r.setNomeSpettacolo("slayer");
-		//r.setInizioPeriodo(Date.valueOf(LocalDate.of(2018, 1, 14)));
-		
-		List<Spettacolo> spettacoli = spettacoloDAO.cercaSpettacoli(r);
-		for(Spettacolo spect : spettacoli) {
-			System.out.println( spect );
-			spect.getArtisti();
-			System.out.println( spect );
-		}
-		
-		
-/* ------------------------- TEST VECCHI ------------------------*/ 	
+//		//spettacoloArtistaMappingDAO.create(4, 23);
+//		//spettacoloArtistaMappingDAO.delete(4, 1);
+//		
+//		RicercaSpettacolo r = new RicercaSpettacolo();
+//		r.setNomeArtista("foo");
+//		//r.setGenereSpettacolo("metal");
+//		//r.setNomeSpettacolo("slayer");
+//		//r.setInizioPeriodo(Date.valueOf(LocalDate.of(2018, 1, 14)));
+//		
+//		List<Spettacolo> spettacoli = spettacoloDAO.cercaSpettacoli(r);
+//		for(Spettacolo spect : spettacoli) {
+//			System.out.println( spect );
+//			spect.getArtisti();
+//			System.out.println( spect );
+//		}
 		
 //		CittaDAO cittaDAO = daoFactoryInstance.getCittaDAO();
 //		Citta c = cittaDAO.read(21);

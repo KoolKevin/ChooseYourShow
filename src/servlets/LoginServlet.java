@@ -8,8 +8,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import beans.Pubblicatore;
 import beans.Utente;
 import dao.DAOFactory;
+import dao.PubblicatoreDAO;
 import dao.UtenteDAO;
 
 public class LoginServlet extends HttpServlet {
@@ -25,17 +27,44 @@ public class LoginServlet extends HttpServlet {
 	
 	@Override
 	public void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String operazione = request.getParameter("operazione");
+		/*
+		 * In questo 3 righe sotto uso un hack per essere sicuro di ottenere l'operazione giusta:
+		 * Se la servlet viene chiamata da un form i parametri possono essere recuperati solo con request.getParameter().
+		 * Se la servlet viene chiamata da un'altra servlet con un forward i parametri possono essere recuperati solo
+		 * con request.getAttribute().
+		 * 
+		 * Dato che la servlet viene chiamata in tutti e due i modi devo fare come scritto sotto.
+		 * Brutto, non so perchè hanno separato i due casi >:(
+		 */
+		String operazione = (String)request.getAttribute("operazione");
+		if( operazione == null ) {
+			operazione = request.getParameter("operazione");
+		}
 		
 		//dispatching
-		switch (operazione) {
-	        case "loginUtente":
+		switch(operazione) {
+	        case "login":
 	        	request.removeAttribute("operazione");
-	        	loginUtente(request, response);
+	        	//stessa cosa per categoria_utente come per operazione
+	        	String categoria_utente = (String)request.getAttribute("categoria_utente");
+	        	if( categoria_utente == null ) {
+	        		categoria_utente = request.getParameter("categoria_utente");
+	    		}
+	        	
+	        	if( categoria_utente.equals("utente") ) {
+	        		loginUtente(request, response);
+	        	} else if( categoria_utente.equals("pubblicatore") ) {
+	        		loginPubblicatore(request, response);
+	        	} else if( categoria_utente.equals("amministratore") ) {
+	        		//loginAmministratore(request, response);
+	        	} else {
+	        		response.sendRedirect("pages/login.jsp?errore=categoria utente misteriosa");
+	        	}
+	        	
 	            break;
-	        case "logoutUtente":
+	        case "logout":
 	        	request.removeAttribute("operazione");
-	        	logoutUtente(request, response);
+	        	logout(request, response);
 	            break;
 	        default:
 	        	//nella loginServlet in caso di errore ritorno al login
@@ -65,7 +94,29 @@ public class LoginServlet extends HttpServlet {
 		}
 	}
 	
-	public void logoutUtente(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+	public void loginPubblicatore(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+		PubblicatoreDAO pubblicatoreDAO = daoFactory.getPubblicatoreDAO();
+		
+		String email = request.getParameter("email");
+		String password = request.getParameter("password");
+		
+		Pubblicatore result = pubblicatoreDAO.read(email, password);
+		
+		//autenticazione fallita
+		if( result == null ) {
+			response.sendRedirect("pages/login.jsp?logged_in=false");
+		}
+		//mi sono autenticato
+		else {
+			HttpSession session = request.getSession();
+			session.setAttribute("pubblicatore", result);
+
+			//forward
+			response.sendRedirect("pages/homepage_pubblicatore.jsp");
+		}
+	}
+	
+	public void logout(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		request.getSession().invalidate();
 		response.sendRedirect("pages/login.jsp?logged_in=logged_out");
 	}

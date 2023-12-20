@@ -4,6 +4,17 @@
 <!-- accesso alla sessione -->
 <%@ page session="true"%>
 
+<%@ page import="dao.DAOFactory"%>
+<%@ page import="dao.CittaDAO"%>
+<%@ page import="java.util.List"%>
+<%@ page import="beans.Citta"%>
+
+<%!
+	public static final int DAO = DAOFactory.DB2;
+	DAOFactory daoFactoryInstance = DAOFactory.getDAOFactory(DAO);
+	CittaDAO cittaDAO = daoFactoryInstance.getCittaDAO();
+%>
+
 <html>
    <head>
 	  <link type="text/css" href="../styles/default.css" rel="stylesheet"></link>
@@ -18,43 +29,29 @@
    		
    		<!-- pagina -->
 		<div class="container">
-	   		<h2>Logga!</h2>
-	 		<form method="POST" action="../loginServlet">
+	   		<h2>Iscriviti!</h2>
+	 		<form method="POST" action="../iscrizioneServlet">
+	 			Username: <input name="username" type="text"/><br>
 	 			Email: <input name="email" type="text"/><br>
 	 			Password: <input name="password" type="password"/><br>
-	 			<input name="categoria_utente" value="utente" type="radio" checked/>Utente<br>
-	    		<input name="categoria_utente" value="pubblicatore" type="radio"/>Pubblicatore<br>
-	    		<input name="categoria_utente" value="amministratore"  type="radio"/>Amministratore<br>
-	    		
-	 			<input name="operazione" value="login" type="submit" />
+	 			Citta in cui vivi: <select name="id_citta">
+				    <% for( Citta c : cittaDAO.readAll() ) {%>
+				    	<option value="<%= c.getId() %>"><%= c.getNome() %></option>
+				    <%} %>
+				</select><br>
+	 			<input name="notifiche_app" value="true" type="radio"/>Desidero notifiche tramite app<br>
+	    		<input name="notifiche_mail" value="true" type="radio"/>Desidero notifiche tramite mail<br>	    		
+	 			<input name="operazione" value="iscrizione_utente" type="submit" />
 	 		</form>
 	 		
 	 		<a href="homepage_utente.jsp">vai alla homepage"</a>
 	 		
-	 		<!-- errore nel dispatching della login servlet -->
+	 		<!-- errore nel dispatching della iscrizione servlet -->
 	 		<%
 	 			String errore=request.getParameter("errore");
 	 			if( errore != null ) {
 	 		%>
-	 		<div>c'è stato un errore nella loginServlet: <%= errore %></div>
-	 		<%
-	 			} //if
-	 		%>
-	 		<!-- messaggio per login fallito -->
-	 		<%
-	 			String logged_in=request.getParameter("logged_in");
-	 			if( logged_in != null && logged_in.equals("false")) {
-	 		%>
-	 		<div>login fallito, riprova</div>
-	 		<%
-	 			} //if
-	 		%>
-	 		<!-- messaggio per logout -->
-	 		<%
-	 			logged_in=request.getParameter("logged_in");
-	 			if( logged_in != null && logged_in.equals("logged_out")) {
-	 		%>
-	 		<div>logout effettuato con successo</div>
+	 		<div>c'è stato un errore nella iscrizione Servlet: <%= errore %></div>
 	 		<%
 	 			} //if
 	 		%>

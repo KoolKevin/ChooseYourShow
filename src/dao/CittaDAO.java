@@ -1,5 +1,7 @@
 package dao;
 
+import java.util.List;
+
 import beans.Citta;
 
 public interface CittaDAO {
@@ -14,4 +16,6 @@ public interface CittaDAO {
 	public boolean delete(int id);
 	
 	// -------- METODI PARTICOLARI --------------------------
+	
+	public List<Citta> readAll();
 }

@@ -3,13 +3,7 @@ package dao.db2;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
-import dao.ArtistaDAO;
-import dao.CittaDAO;
-import dao.DAOFactory;
-import dao.LocaleDAO;
-import dao.SpettacoloArtistaMappingDAO;
-import dao.SpettacoloDAO;
-import dao.UtenteDAO;
+import dao.*;
 
 
 public class Db2DAOFactory extends DAOFactory {
@@ -82,10 +76,13 @@ public class Db2DAOFactory extends DAOFactory {
 	public ArtistaDAO getArtistaDAO() {
 		return new Db2ArtistaDAO();
 	}
-
 	@Override
 	public SpettacoloArtistaMappingDAO getSpettacoloArtistaMappingDAO() {
 		return new Db2SpettacoloArtistaMappingDAO();
 	}
 	
+	@Override
+	public PubblicatoreDAO getPubblicatoreDAO() {
+		return new Db2PubblicatoreDAO();
+	}
 }

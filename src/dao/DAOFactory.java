@@ -25,4 +25,6 @@ public abstract class DAOFactory {
 	public abstract ArtistaDAO getArtistaDAO();
 	public abstract SpettacoloArtistaMappingDAO getSpettacoloArtistaMappingDAO();
 	
+	public abstract PubblicatoreDAO getPubblicatoreDAO();
+	
 }
