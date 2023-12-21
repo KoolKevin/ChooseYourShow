@@ -25,7 +25,8 @@
 		<div class="container">
 			<h1>Benvenuto!</h1>
 			<%
-				Pubblicatore p = (Pubblicatore)session.getAttribute("pubblicatore");
+				//p dichiarato nella navbar
+				p = (Pubblicatore)session.getAttribute("pubblicatore");
 				if(p != null) { 
 			%> 
 			<h3>pubblicatore corrente: <%= p.toString() %></h3>

@@ -14,4 +14,6 @@ public interface ArtistaDAO {
 	public boolean delete(int id);
 	
 	// -------- METODI PARTICOLARI --------------------------
+	
+	public Artista read(String nomeCompleto);
 }

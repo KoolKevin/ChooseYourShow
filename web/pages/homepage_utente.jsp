@@ -25,7 +25,8 @@
 		<div class="container">
 			<h1>Benvenuto!</h1>
 			<%
-				Utente u = (Utente)session.getAttribute("utente");
+				//u dichiarato nella navbar
+				u = (Utente)session.getAttribute("utente");
 				if(u != null) { 
 			%> 
 			<h3>utente corrente: <%= u.toString() %></h3>

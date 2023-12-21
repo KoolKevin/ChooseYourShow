@@ -7,7 +7,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import beans.Artista;
 import beans.Citta;
@@ -115,8 +114,7 @@ public class IscrizioneServlet extends HttpServlet {
 		artistaGestito.setNomeCompleto(nomeCompletoArtista);
 		artistaGestito.setNomeArte(nomeArte);
 		artistaGestito.setBiografia(biografia);
-		//TODO: fai in modo che nella create si recuperi l'id dell'artista appena inserito,
-		//      altrimenti non viene salvata la fk del pubblicatore
+		
 		artistaDAO.create(artistaGestito); 
 		
 		//costruisco il pubblicatore
@@ -124,7 +122,7 @@ public class IscrizioneServlet extends HttpServlet {
 		nuovoPubblicatore.setEmail(email);
 		nuovoPubblicatore.setPassword(password);
 		nuovoPubblicatore.setNomeOrganizzazione(nomeOrganizzazione);
-		nuovoPubblicatore.setNomeCompleto(nomeCompletoArtista);
+		nuovoPubblicatore.setNomeCompleto(nomeCompleto);
 		if(notificheApp != null) {
 			nuovoPubblicatore.setFlag_notifiche_app(true);
 		}
@@ -137,6 +135,7 @@ public class IscrizioneServlet extends HttpServlet {
 		else {
 			nuovoPubblicatore.setFlag_notifiche_mail(false);
 		}
+		nuovoPubblicatore.setAutorizzato(false);
 		nuovoPubblicatore.setArtistaGestito(artistaGestito);
 		
 		pubblicatoreDAO.create(nuovoPubblicatore);

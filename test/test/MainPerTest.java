@@ -33,6 +33,13 @@ public class MainPerTest {
 		CittaDAO cittaDAO = daoFactoryInstance.getCittaDAO();
 		System.out.println( cittaDAO.readAll() );
 		
+		Artista a_creato = new Artista();
+		a_creato.setNomeCompleto("Napoleone Bonaparte");
+		a_creato.setNomeArte("lil uzi");
+		a_creato.setBiografia("fuoco");
+		//artistaDAO.create(a_creato);
+		System.out.println(a_creato);
+		
 
 		
 		
