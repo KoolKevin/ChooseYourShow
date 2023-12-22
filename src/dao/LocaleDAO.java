@@ -1,5 +1,7 @@
 package dao;
 
+import java.util.List;
+
 import beans.Locale;
 
 public interface LocaleDAO {
@@ -14,4 +16,6 @@ public interface LocaleDAO {
 	public boolean delete(int id);
 	
 	// -------- METODI PARTICOLARI --------------------------
+	
+	public List<Locale> readAll();
 }

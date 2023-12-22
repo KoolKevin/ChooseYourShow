@@ -20,13 +20,18 @@
 
 	<body>	
 		<%@ include file="../fragments/navbar.jsp" %>
-		
+		<!-- check per vedere se sono loggato -->
+   		<%
+   			if(p == null ) {
+   				response.sendRedirect("login.jsp?errore=esegui il login");
+   			}
+   		%>
+   		
 		<!-- pagina -->
 		<div class="container">
 			<h1>Benvenuto!</h1>
 			<%
 				//p dichiarato nella navbar
-				p = (Pubblicatore)session.getAttribute("pubblicatore");
 				if(p != null) { 
 			%> 
 			<h3>pubblicatore corrente: <%= p.toString() %></h3>

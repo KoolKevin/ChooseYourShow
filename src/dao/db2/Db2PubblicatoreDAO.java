@@ -96,7 +96,7 @@ public class Db2PubblicatoreDAO implements PubblicatoreDAO {
 			ResultSet rs = prep_stmt.executeQuery();
 			
 			if (rs.next()) {
-				Pubblicatore entry = new Pubblicatore();
+				Pubblicatore entry = new Db2PubblicatoreProxy();
 				entry.setId(rs.getInt(ID));
 				entry.setEmail(rs.getString(EMAIL));
 				entry.setPassword(rs.getString(PASSWORD));
@@ -121,6 +121,8 @@ public class Db2PubblicatoreDAO implements PubblicatoreDAO {
 					entry.setFlag_notifiche_mail(false);
 				}
 				idArtista = rs.getInt(FK_ID_ARTISTA);
+				
+				//fetch lazy della lista di supportoSpettacolo associata al pubblicatore, ci pensa il proxy
 				
 				//fetch eager: recupero subito l'artista associato al pubblicatore
 				Db2ArtistaDAO artistaDAO = new Db2ArtistaDAO();
@@ -163,7 +165,7 @@ public class Db2PubblicatoreDAO implements PubblicatoreDAO {
 			ResultSet rs = prep_stmt.executeQuery();
 			
 			if (rs.next()) {
-				Pubblicatore entry = new Pubblicatore();
+				Pubblicatore entry = new Db2PubblicatoreProxy();
 				entry.setId(rs.getInt(ID));
 				entry.setEmail(rs.getString(EMAIL));
 				entry.setPassword(rs.getString(PASSWORD));
@@ -188,6 +190,8 @@ public class Db2PubblicatoreDAO implements PubblicatoreDAO {
 					entry.setFlag_notifiche_mail(false);
 				}
 				idArtista = rs.getInt(FK_ID_ARTISTA);
+				
+				//fetch lazy della lista di supportoSpettacolo associata al pubblicatore, ci pensa il proxy
 				
 				//fetch eager: recupero subito l'artista associato al pubblicatore
 				Db2ArtistaDAO artistaDAO = new Db2ArtistaDAO();

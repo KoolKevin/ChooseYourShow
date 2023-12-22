@@ -18,5 +18,8 @@ public interface SpettacoloDAO {
 	
 	// -------- METODI PARTICOLARI --------------------------
 	
+	public Spettacolo read(String nome);
+	
 	public List<Spettacolo> cercaSpettacoli(RicercaSpettacolo r);
+	
 }

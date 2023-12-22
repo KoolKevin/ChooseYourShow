@@ -6,33 +6,40 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-import beans.Citta;
 import beans.Locale;
-import dao.LocaleDAO;
+import beans.Settore;
+import dao.SettoreDAO;
 
-public class Db2LocaleDAO implements LocaleDAO {
+public class Db2SettoreDAO implements SettoreDAO {
 	//costanti nomi table e attributi per non sbagliarsi
-	private static final String TABLE = "locali";
+	private static final String TABLE = "settori";
 		private static final String ID = "id";
 		private static final String NOME = "nome";
-		private static final String FK_ID_CITTA = "idcitta";
+		private static final String DESCRIZIONE = "descrizione";
+		private static final String CAPIENZA = "capienza";
+		private static final String FK_ID_LOCALE = "idLocale";
 	
 	//query
-	private static final String INSERT = "INSERT INTO "+TABLE+"("+NOME+", "+FK_ID_CITTA+")"
-									   + " VALUES (?,?)";
+	private static final String INSERT = "INSERT INTO "+TABLE+"("+NOME+","+DESCRIZIONE+","+CAPIENZA
+									   + ","+FK_ID_LOCALE +")"
+									   + " VALUES (?,?,?,?)";
 	
 	private static final String READ_BY_ID = "SELECT * " +
 			"FROM " + TABLE + " " +
 			"WHERE " + ID + " = ? ";
 	
-	private static final String READ_ALL = "SELECT * FROM " + TABLE;
+	private static final String GET_SETTORI_OF_LOCALE = "SELECT * " +
+			"FROM " + TABLE + " " +
+			"WHERE " + FK_ID_LOCALE + " = ? ";
+	
+	
 	//TODO: costanti per query UPDATE e DELETE
 		
 	@Override
-	public void create(Locale locale) {
+	public void create(Settore settore) {
 		//controllo argomenti
 		//TODO: fai un controllo migliore
-		if (locale == null) {
+		if (settore == null) {
 			System.err.println("create(): failed to insert a null entry");
 			return;
 		}
@@ -44,8 +51,10 @@ public class Db2LocaleDAO implements LocaleDAO {
 			PreparedStatement prep_stmt = conn.prepareStatement(INSERT);
 
 			prep_stmt.clearParameters();
-			prep_stmt.setString(1, locale.getNome());
-			prep_stmt.setInt(2, locale.getCitta().getId());
+			prep_stmt.setString(1, settore.getNome());
+			prep_stmt.setString(2, settore.getDescrizione());
+			prep_stmt.setInt(3, settore.getCapienza());
+			prep_stmt.setInt(4, settore.getLocale().getId());
 
 			prep_stmt.executeUpdate();
 
@@ -57,13 +66,11 @@ public class Db2LocaleDAO implements LocaleDAO {
 		} finally {
 			Db2DAOFactory.closeConnection(conn);
 		}
-		
 	}
 
 	@Override
-	public Locale read(int id) {
-		Locale result = null;
-		int idCitta = -1;
+	public Settore read(int id) {
+		Settore result = null;
 		
 		if (id < 0) {
 			System.err.println("read(): cannot read an entry with a negative id");
@@ -78,18 +85,19 @@ public class Db2LocaleDAO implements LocaleDAO {
 			ResultSet rs = prep_stmt.executeQuery();
 			
 			if (rs.next()) {
-				Locale entry = new Db2LocaleProxy();
+				Settore entry = new Settore();
 				entry.setId(rs.getInt(ID));
 				entry.setNome(rs.getString(NOME));
-				idCitta = rs.getInt(FK_ID_CITTA);
+				entry.setDescrizione(rs.getString(DESCRIZIONE));
+				entry.setCapienza(rs.getInt(CAPIENZA));
+
+				int idLocale = rs.getInt(FK_ID_LOCALE);
 				
-				//fetch eager: recupero subito la citta associata al locale
-				Db2CittaDAO cittaDAO = new Db2CittaDAO();
-				Citta citta = cittaDAO.read(idCitta);
+                //fetch eager del locale associato al settore
+				Db2LocaleDAO localeDAO = new Db2LocaleDAO();
+				Locale locale = localeDAO.read(idLocale);
 				
-				//fetch lazy dei settori associati al locale, ci pensa il proxy
-				
-				entry.setCitta(citta);
+				entry.setLocale(locale);
 				
 				result = entry;
 			}
@@ -109,28 +117,35 @@ public class Db2LocaleDAO implements LocaleDAO {
 	}
 	
 	@Override
-	public List<Locale> readAll() {
-		List<Locale> result = new ArrayList<Locale>();
-		int idCitta = -1;
+	public List<Settore> getSettoriOfLocale(int id) {
+		List<Settore> result = new ArrayList<Settore>();
+		
+		if (id < 0) {
+			System.err.println("read(): cannot read an entry with a negative id");
+			return result;
+		}
 
 		Connection conn = Db2DAOFactory.createConnection();
 		try {
-			PreparedStatement prep_stmt = conn.prepareStatement(READ_ALL);
+			PreparedStatement prep_stmt = conn.prepareStatement(GET_SETTORI_OF_LOCALE);
+			prep_stmt.clearParameters();
+			prep_stmt.setInt(1, id);
 			ResultSet rs = prep_stmt.executeQuery();
 			
-			while(rs.next()) {
-				Locale entry = new Db2LocaleProxy();
+			while (rs.next()) {
+				Settore entry = new Settore();
 				entry.setId(rs.getInt(ID));
 				entry.setNome(rs.getString(NOME));
-				idCitta = rs.getInt(FK_ID_CITTA);
+				entry.setDescrizione(rs.getString(DESCRIZIONE));
+				entry.setCapienza(rs.getInt(CAPIENZA));
+
+				int idLocale = rs.getInt(FK_ID_LOCALE);
 				
-				//fetch eager: recupero subito la citta associata al locale
-				Db2CittaDAO cittaDAO = new Db2CittaDAO();
-				Citta citta = cittaDAO.read(idCitta);
+                //fetch eager del locale associato al settore
+				Db2LocaleDAO localeDAO = new Db2LocaleDAO();
+				Locale locale = localeDAO.read(idLocale);
 				
-				//fetch lazy dei settori associati al locale, ci pensa il proxy
-				
-				entry.setCitta(citta);
+				entry.setLocale(locale);
 				
 				result.add(entry);
 			}
@@ -139,7 +154,7 @@ public class Db2LocaleDAO implements LocaleDAO {
 			prep_stmt.close();
 		}
 		catch (Exception e) {
-			System.err.println("read(): failed to retrieve entries" + e.getMessage());
+			System.err.println("read(): failed to retrieve entry with id = " + id + ": " + e.getMessage());
 			e.printStackTrace();
 		}
 		finally {
@@ -148,10 +163,9 @@ public class Db2LocaleDAO implements LocaleDAO {
 		
 		return result;
 	}
-	
-	//TODO: UPDATE e DELETE
+
 	@Override
-	public boolean update(Locale locale) {
+	public boolean update(Settore s) {
 		// TODO Auto-generated method stub
 		return false;
 	}

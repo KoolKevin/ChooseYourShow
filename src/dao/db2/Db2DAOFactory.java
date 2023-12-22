@@ -85,4 +85,24 @@ public class Db2DAOFactory extends DAOFactory {
 	public PubblicatoreDAO getPubblicatoreDAO() {
 		return new Db2PubblicatoreDAO();
 	}
+	
+	@Override
+	public SupportoSpettacoloDAO getSupportoSpettacoloDAO() {
+		return new Db2SupportoSpettacoloDAO();
+	}
+	
+	@Override
+	public BigliettoDAO getBigliettoDAO() {
+		return new Db2BigliettoDAO();
+	}
+	
+	@Override
+	public SettoreDAO getSettoreDAO() {
+		return new Db2SettoreDAO();
+	}
+	
+	@Override
+	public PostoDAO getPostoDAO() {
+		return new Db2PostoDAO();
+	}
 }

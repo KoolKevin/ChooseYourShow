@@ -13,7 +13,11 @@ public class Spettacolo {
 	private String[] generi = new String[5];
 	private Locale locale;
 	private List<Artista> artisti = new ArrayList<Artista>();
-	private boolean alreadyLoaded = false;
+	private List<Biglietto> biglietti = new ArrayList<Biglietto>();
+	private SupportoSpettacolo supporto = new SupportoSpettacolo();
+	private boolean alreadyLoadedArtisti = false;
+	private boolean alreadyLoadedBiglietti = false;
+	private boolean alreadyLoadedSupporto = false;
 	
 	public int getId() {
 		return id;
@@ -77,15 +81,42 @@ public class Spettacolo {
 	public void setArtisti(List<Artista> artisti) {
 		this.artisti = artisti;
 	}
+	public boolean isAlreadyLoadedArtisti() {
+		return alreadyLoadedArtisti;
+	}
+	public void setAlreadyLoadedArtisti(boolean alreadyLoaded) {
+		this.alreadyLoadedArtisti = alreadyLoaded;
+	}
+	public SupportoSpettacolo getSupporto() {
+		return supporto;
+	}
+	public void setSupporto(SupportoSpettacolo supporto) {
+		this.supporto = supporto;
+	}
+	public boolean isAlreadyLoadedSupporto() {
+		return alreadyLoadedSupporto;
+	}
+	public void setAlreadyLoadedSupporto(boolean alreadyLoadedSupporto) {
+		this.alreadyLoadedSupporto = alreadyLoadedSupporto;
+	}
 	@Override
 	public String toString() {
 		return "Spettacolo [id=" + id + ", nome=" + nome + ", data=" + data + ", tipologia=" + tipologia + ", generi="
-				+ Arrays.toString(generi) + ", locale=" + locale + ", artisti=" + artisti + "]";
+				+ Arrays.toString(generi) + ", locale=" + locale + ", artisti=" + artisti + ", biglietti=" + biglietti
+				+ ", supporto=" + supporto + ", alreadyLoadedArtisti=" + alreadyLoadedArtisti
+				+ ", alreadyLoadedBiglietti=" + alreadyLoadedBiglietti + ", alreadyLoadedSupporto="
+				+ alreadyLoadedSupporto + "]";
 	}
-	public boolean isAlreadyLoaded() {
-		return alreadyLoaded;
+	public List<Biglietto> getBiglietti() {
+		return biglietti;
 	}
-	public void setAlreadyLoaded(boolean alreadyLoaded) {
-		this.alreadyLoaded = alreadyLoaded;
+	public void setBiglietti(List<Biglietto> biglietti) {
+		this.biglietti = biglietti;
+	}
+	public boolean isAlreadyLoadedBiglietti() {
+		return alreadyLoadedBiglietti;
+	}
+	public void setAlreadyLoadedBiglietti(boolean alreadyLoadedBiglietti) {
+		this.alreadyLoadedBiglietti = alreadyLoadedBiglietti;
 	}
 }

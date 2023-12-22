@@ -34,6 +34,10 @@ public class Db2SpettacoloDAO implements SpettacoloDAO {
 	private static final String READ_BY_ID = "SELECT * " +
 			"FROM " + TABLE + " " +
 			"WHERE " + ID + " = ? ";
+	
+	private static final String READ_BY_NAME = "SELECT * " +
+			"FROM " + TABLE + " " +
+			"WHERE " + NOME + " = ? ";
 	//TODO: costanti per query UPDATE e DELETE
 		
 	@Override
@@ -69,6 +73,12 @@ public class Db2SpettacoloDAO implements SpettacoloDAO {
 			}
 			prep_stmt.setInt(9, spettacolo.getLocale().getId());
 			prep_stmt.executeUpdate();
+			
+			/* quando creo un artista mi serve anche recuperare il suo id autogenerato dal db */
+			
+			//NB: se faccio così creo e chiudo due volte una connessione al db, ci metto un po' di tempo :/
+			Spettacolo spettacoloCreato = this.read(spettacolo.getNome());
+			spettacolo.setId(spettacoloCreato.getId());
 
 			prep_stmt.close();
 		}
@@ -119,6 +129,8 @@ public class Db2SpettacoloDAO implements SpettacoloDAO {
 				Locale locale = localeDAO.read(idLocale);
 				
 				//fetch lazy degli artisti: se ne occupa il proxy
+				//fetch lazy dei biglietti: se ne occupa il proxy
+				//fetch lazy del supporto: se ne occupa il proxy
 				
 				entry.setLocale(locale);
 				
@@ -130,6 +142,66 @@ public class Db2SpettacoloDAO implements SpettacoloDAO {
 		}
 		catch (Exception e) {
 			System.err.println("read(): failed to retrieve entry with id = " + id + ": " + e.getMessage());
+			e.printStackTrace();
+		}
+		finally {
+			Db2DAOFactory.closeConnection(conn);
+		}
+		
+		return result;
+	}
+	
+	@Override
+	public Spettacolo read(String nome) {
+		Spettacolo result = null;
+		
+		if (nome == null) {
+			System.err.println("read(): cannot read an entry with a null name");
+			return result;
+		}
+
+		Connection conn = Db2DAOFactory.createConnection();
+		try {
+			PreparedStatement prep_stmt = conn.prepareStatement(READ_BY_NAME);
+			prep_stmt.clearParameters();
+			prep_stmt.setString(1, nome);
+			ResultSet rs = prep_stmt.executeQuery();
+			
+			if (rs.next()) {
+				Spettacolo entry = new Db2SpettacoloProxy();
+				entry.setId(rs.getInt(ID));
+				entry.setNome(rs.getString(NOME));
+				//anche qua devo gestire bene i due formati di data
+				long secs = rs.getDate(DATA).getTime();
+                java.util.Date data = new java.util.Date(secs);
+                entry.setData(data);
+                entry.setTipologia(TIPOLOGIA);
+                entry.getGeneri()[0] = rs.getString(GENERE1);
+                entry.getGeneri()[1] = rs.getString(GENERE2);
+                entry.getGeneri()[2] = rs.getString(GENERE3);
+                entry.getGeneri()[3] = rs.getString(GENERE4);
+                entry.getGeneri()[4] = rs.getString(GENERE5);
+                
+                int idLocale = rs.getInt(FK_ID_LOCALE);
+                
+                //fetch eager: recupero subito il locale associato allo spettacolo
+				Db2LocaleDAO localeDAO = new Db2LocaleDAO();
+				Locale locale = localeDAO.read(idLocale);
+				
+				//fetch lazy degli artisti: se ne occupa il proxy
+				//fetch lazy dei biglietti: se ne occupa il proxy
+				//fetch lazy del supporto: se ne occupa il proxy
+				
+				entry.setLocale(locale);
+				
+				result = entry;
+			}
+				
+			rs.close();
+			prep_stmt.close();
+		}
+		catch (Exception e) {
+			System.err.println("read(): failed to retrieve entry with name = " + nome + ": " + e.getMessage());
 			e.printStackTrace();
 		}
 		finally {
@@ -282,4 +354,6 @@ public class Db2SpettacoloDAO implements SpettacoloDAO {
 		
 		return result;
 	}
+
+	
 }

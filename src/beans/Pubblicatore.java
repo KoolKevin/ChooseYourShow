@@ -1,5 +1,8 @@
 package beans;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Pubblicatore {
 	private int id;
 	private String email;
@@ -9,6 +12,9 @@ public class Pubblicatore {
 	private boolean flag_notifiche_app;
 	private boolean flag_notifiche_mail;
 	private boolean isAutorizzato;
+	
+	List<SupportoSpettacolo> supportiSpettacoliPubblicati = new ArrayList<SupportoSpettacolo>();
+	private boolean alreadyLoadedSupporti = false;
 	
 	private Artista artistaGestito;
 
@@ -102,12 +108,29 @@ public class Pubblicatore {
 		this.artistaGestito = artistaGestito;
 	}
 
+	public List<SupportoSpettacolo> getSupportiSpettacoliPubblicati() {
+		return supportiSpettacoliPubblicati;
+	}
+
+	public void setSupportiSpettacoliPubblicati(List<SupportoSpettacolo> supportiSpettacoliPubblicati) {
+		this.supportiSpettacoliPubblicati = supportiSpettacoliPubblicati;
+	}
+
+	public boolean isAlreadyLoadedSupporti() {
+		return alreadyLoadedSupporti;
+	}
+
+	public void setAlreadyLoadedSupporti(boolean alreadyLoadedSupporti) {
+		this.alreadyLoadedSupporti = alreadyLoadedSupporti;
+	}
+
 	@Override
 	public String toString() {
-		return "Pubblicatore [id=" + id + ", email=" + email + ", nomeOrganizzazione=" + nomeOrganizzazione
-				+ ", nomeCompleto=" + nomeCompleto + ", flag_notifiche_app=" + flag_notifiche_app
+		return "Pubblicatore [id=" + id + ", email=" + email + ", password=" + password + ", nomeOrganizzazione="
+				+ nomeOrganizzazione + ", nomeCompleto=" + nomeCompleto + ", flag_notifiche_app=" + flag_notifiche_app
 				+ ", flag_notifiche_mail=" + flag_notifiche_mail + ", isAutorizzato=" + isAutorizzato
-				+ ", artistaGestito=" + artistaGestito + "]";
+				+ ", supportiSpettacoliPubblicati=" + supportiSpettacoliPubblicati + ", alreadyLoadedSupporti="
+				+ alreadyLoadedSupporti + ", artistaGestito=" + artistaGestito + "]";
 	}	
 	
 }

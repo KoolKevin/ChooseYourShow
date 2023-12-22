@@ -12,38 +12,94 @@ public class MainPerTest {
 	// classe main per fare test
 	public static void main(String[] args) {
 		DAOFactory daoFactoryInstance = DAOFactory.getDAOFactory(DAO);
-		ArtistaDAO artistaDAO = daoFactoryInstance.getArtistaDAO();
-	
-		Artista a = artistaDAO.read(1);
+		SpettacoloDAO spettacoloDAO = daoFactoryInstance.getSpettacoloDAO();
+		BigliettoDAO bigliettoDAO = daoFactoryInstance.getBigliettoDAO();
+		LocaleDAO localeDAO = daoFactoryInstance.getLocaleDAO();
+		SettoreDAO settoreDAO = daoFactoryInstance.getSettoreDAO();
+		PostoDAO postoDAO = daoFactoryInstance.getPostoDAO();
 		
-		PubblicatoreDAO pubblicatoreDAO = daoFactoryInstance.getPubblicatoreDAO();
-		Pubblicatore p = new Pubblicatore();
-		p.setEmail("kevin@gmail.com");
-		p.setPassword("pubblicatore");
-		p.setNomeOrganizzazione("cattiveria music");
-		p.setNomeCompleto("Koltraka Kevin");
-		p.setAutorizzato(false);
-		p.setFlag_notifiche_app(true);
-		p.setFlag_notifiche_mail(true);
-		p.setArtistaGestito(a);
-		//pubblicatoreDAO.create(p);
-		System.out.println( pubblicatoreDAO.read(1) );
-		System.out.println( pubblicatoreDAO.read("kevin@gmail.com", "pubblicatore") );
-	
-		CittaDAO cittaDAO = daoFactoryInstance.getCittaDAO();
-		System.out.println( cittaDAO.readAll() );
+		Spettacolo s = spettacoloDAO.read(2);
+		s.getBiglietti();
 		
-		Artista a_creato = new Artista();
-		a_creato.setNomeCompleto("Napoleone Bonaparte");
-		a_creato.setNomeArte("lil uzi");
-		a_creato.setBiografia("fuoco");
-		//artistaDAO.create(a_creato);
-		System.out.println(a_creato);
+		Locale l = localeDAO.read(1);
+		l.getSettori();
 		
-
+		Settore set = new Settore();
+		set.setNome("parterre");
+		set.setDescrizione("parterre");
+		set.setCapienza(50);
+		set.setLocale(l);
+		//settoreDAO.create(set);
+		set = settoreDAO.read(1);
+		System.out.println(set);
+		
+		Biglietto b = new Biglietto();
+		b.setDescrizione("biglietto SFIGATO");
+		b.setBigliettiDisponibili(300);
+		b.setCosto(20.50F);
+		b.setSpettacolo(s);
+		b.setSettore(set);
+		bigliettoDAO.create(b);
+		
+		System.out.println(bigliettoDAO.read(2));
+				
+		Posto p = new Posto();
+		p.setFila("A");
+		p.setSedia("00");
+		p.setOccupato(true);
+		p.setSettore(set);
+		//postoDAO.create(p);
+		System.out.println(postoDAO.read(2));
+		
+		System.out.println(localeDAO.readAll());
 		
 		
 /* ------------------------- TEST VECCHI ------------------------*/ 	
+//		SupportoSpettacoloDAO supportoSpettacoloDAO = daoFactoryInstance.getSupportoSpettacoloDAO();
+//		SpettacoloDAO spettacoloDAO = daoFactoryInstance.getSpettacoloDAO();
+//		PubblicatoreDAO pubblicatoreDAO = daoFactoryInstance.getPubblicatoreDAO();
+//
+//		Pubblicatore p = pubblicatoreDAO.read(1);
+//		//System.out.println(p);
+//		p.getSupportiSpettacoliPubblicati();
+//		//System.out.println(p);
+//		
+//		Spettacolo s = p.getArtistaGestito().getSpettacoli().get(0);
+//		s.getSupporto();
+//		
+//		SupportoSpettacolo ss = new SupportoSpettacolo();
+//		ss.setPubblicatore(p);
+//		ss.setSpettacoloNonApprovato(s);
+//		supportoSpettacoloDAO.create(ss);
+		
+		//System.out.println( supportoSpettacoloDAO.readSupportiOfPubblicatore(p.getId()) );
+//		ArtistaDAO artistaDAO = daoFactoryInstance.getArtistaDAO();
+//		
+//		Artista a = artistaDAO.read(1);
+//		
+//		PubblicatoreDAO pubblicatoreDAO = daoFactoryInstance.getPubblicatoreDAO();
+//		Pubblicatore p = new Pubblicatore();
+//		p.setEmail("kevin@gmail.com");
+//		p.setPassword("pubblicatore");
+//		p.setNomeOrganizzazione("cattiveria music");
+//		p.setNomeCompleto("Koltraka Kevin");
+//		p.setAutorizzato(false);
+//		p.setFlag_notifiche_app(true);
+//		p.setFlag_notifiche_mail(true);
+//		p.setArtistaGestito(a);
+//		//pubblicatoreDAO.create(p);
+//		System.out.println( pubblicatoreDAO.read(1) );
+//		System.out.println( pubblicatoreDAO.read("kevin@gmail.com", "pubblicatore") );
+//	
+//		CittaDAO cittaDAO = daoFactoryInstance.getCittaDAO();
+//		System.out.println( cittaDAO.readAll() );
+//		
+//		Artista a_creato = new Artista();
+//		a_creato.setNomeCompleto("Napoleone Bonaparte");
+//		a_creato.setNomeArte("lil uzi");
+//		a_creato.setBiografia("fuoco");
+//		//artistaDAO.create(a_creato);
+//		System.out.println(a_creato);
 //	    SpettacoloArtistaMappingDAO spettacoloArtistaMappingDAO = daoFactoryInstance.getSpettacoloArtistaMappingDAO();
 //	    SpettacoloDAO spettacoloDAO = daoFactoryInstance.getSpettacoloDAO();
 //		ArtistaDAO artistaDAO = daoFactoryInstance.getArtistaDAO();
