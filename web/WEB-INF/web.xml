@@ -39,6 +39,7 @@
         <servlet-name>GestioneAmministratoreServlet</servlet-name>
         <servlet-class>servlets.GestioneAmministratoreServlet</servlet-class>
     </servlet>
+
     
     
     <servlet-mapping>
@@ -65,6 +66,7 @@
         <servlet-name>GestioneAmministratoreServlet</servlet-name>
         <url-pattern>/gestioneAmministratoreServlet</url-pattern>
     </servlet-mapping>
+
 	<!-- Welcome pages -->
 	<!-- pleonastico: tomcat "tenta" in automatico le index.html e index.jsp -->
 	<welcome-file-list>

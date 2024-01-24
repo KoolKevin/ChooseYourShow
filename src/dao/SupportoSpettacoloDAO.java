@@ -1,6 +1,9 @@
 package dao;
 
+<<<<<<< HEAD
 import java.sql.SQLException;
+=======
+>>>>>>> 861c96cd776d0b1c842b881d105704b50891cba6
 import java.util.List;
 
 import beans.SupportoSpettacolo;
@@ -22,4 +25,6 @@ public interface SupportoSpettacoloDAO {
 	public List<SupportoSpettacolo> readSupportiOfPubblicatore(int id);
 	
 	public List<SupportoSpettacolo> readAllSpettacoliDaRevisionare();
+
+	List<SupportoSpettacolo> readSupportiOfPubblicatore(int id);
 }
